@@ -1,0 +1,82 @@
+@use 'sass:math';
+
+$white-size: 36;
+$black-size: $white-size * 5 / 9;
+$gap: 0;
+
+.keyboard {
+  grid-row: 2;
+  grid-column: 2;
+  justify-self: center;
+  display: flex;
+  background-color: var(--black);
+  width: 648px;
+  flex-grow: 0;
+  padding-bottom: 4px;
+}
+
+.keys {
+  display: flex;
+  position: relative;
+  width: max-content;
+  gap: $gap + px;
+  margin: auto;
+}
+
+@for $i from 1 through 30 {
+  $adjust: $i + (math.floor($i / 12) * 2);
+  .keyWrapper {
+    @if $i % 2 == 0 {
+      &:nth-child(#{$i}) {
+        left: #{(($white-size + $gap) * $adjust - $black-size) / 2}px;
+      }
+    } @else {
+      &:nth-child(#{$i}) {
+        left: #{(($white-size + $gap) * $adjust) / 2 + $black-size / 2}px;
+      }
+    }
+  }
+}
+
+.keyWrapper {
+  .key {
+    width: $white-size + px;
+    height: #{$white-size * 3.75}px;
+    background-color: var(--white);
+    border-radius: 0 0 2px 2px;
+    border-bottom: 3px inset var(--white);
+    border-left: 1px inset var(--black);
+    border-right: 1px inset var(--black);
+
+    &.pressed {
+      transform-style: preserve-3d;
+      transform-origin: top;
+      transform: perspective(200px) rotateX(-3deg);
+      transition: all 50ms linear;
+    }
+  }
+
+  &:nth-child(12n + 2),
+  &:nth-child(12n + 4),
+  &:nth-child(12n + 7),
+  &:nth-child(12n + 9),
+  &:nth-child(12n + 11) {
+    $padding: 4px;
+
+    z-index: 999;
+    background-color: var(--black);
+    padding: 0 2px 4px 2px;
+    width: $black-size + $padding;
+    height: #{$black-size * 4.162} + $padding;
+    position: absolute;
+
+    .key {
+      height: 100%;
+      width: 100%;
+      background-color: var(--piano-color);
+      border-right: 5px inset var(--piano-color);
+      border-left: 5px inset var(--piano-color);
+      border-bottom: 8px inset var(--black);
+    }
+  }
+}

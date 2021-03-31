@@ -1,0 +1,73 @@
+.synth {
+  --dark-shadow: rgba(26, 26, 26, 1);
+  --light-shadow: rgba(26, 26, 26, 0.85);
+  --piano-color: #262626;
+  --keyboard-width: 648px;
+  --piano-primary: #f29f05;
+  --black: #2a2a2a;
+  --white: #fafafa;
+
+  button {
+    outline: none;
+    cursor: pointer;
+  }
+
+  overflow: hidden;
+  margin: auto;
+  width: 720px;
+  display: grid;
+  margin-bottom: var(--margin);
+  border-left: 8px solid var(--light-shadow);
+  border-right: 8px inset var(--light-shadow);
+  border-top: 4px inset var(--dark-shadow);
+  border-bottom: 8px outset var(--dark-shadow);
+  color: var(--piano-primary);
+
+  & * {
+    user-select: none;
+    box-sizing: border-box;
+  }
+}
+
+.top {
+  width: 100%;
+
+  background-color: var(--piano-color);
+}
+
+.bottom {
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 0.49fr 654px 0.49fr;
+  justify-content: space-between;
+  background-color: var(--black);
+}
+
+.divider {
+  height: 9px;
+}
+
+.keySection {
+  display: flex;
+  width: 100%;
+  justify-self: center;
+  justify-content: space-between;
+  background-color: var(--black);
+}
+
+.edge {
+  background-color: var(--piano-color);
+  position: relative;
+  height: 100%;
+  grid-row: 1 / 3;
+
+  &.leftEdge {
+    grid-column: 1;
+    box-shadow: -1px 6px 0 6px var(--light-shadow);
+  }
+
+  &.rightEdge {
+    grid-column: 3;
+    box-shadow: 1px 6px 0 6px var(--light-shadow);
+  }
+}
