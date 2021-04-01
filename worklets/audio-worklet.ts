@@ -1,7 +1,5 @@
 /// <reference path="./worklet.d.ts" />
 
-export {}
-
 class Oscillator extends AudioWorkletProcessor {
   id: number
   notePropsLength: number

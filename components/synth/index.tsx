@@ -12,19 +12,12 @@ import {
   GLOBAL_PARAMS,
 } from './helper/constants'
 
-// const Worklet = import(
-//   /* webpackChunkName: 'audio-worklet' */ './audio-worklet.ts'
-// )
+// import worklet from '/worklets/audio-worklet'
 
-import worklet from './audio-worklet.ts'
-
-const Worklet = new URL(worklet, import.meta.url)
-// const workletURL = new URL(
-//   /* webpackMode: 'lazy' */
-//   /* webpackChunkName: 'oscillator-worklet' */
-//   './audio-worklet.ts',
-//   import.meta.url
-// )
+const Worklet = new URL(
+  '../../public/worklets/audio-worklet.js',
+  import.meta.url
+)
 
 import styles from './styles.module.scss'
 
@@ -32,6 +25,7 @@ export default function Synth() {
   const [isReady, setIsReady] = useState(false)
   const [isOn, setIsOn] = useState(true)
   const [isSustaining, setIsSustaining] = useState(false)
+  const [hasMIDIPermission, setHasMIDIPermission] = useState(false)
 
   const [oscillators, setOscillators] = useState<{
     [key: string]: OscillatorProps
@@ -63,6 +57,7 @@ export default function Synth() {
     () =>
       new Worker(new URL('./synth-worker.ts', import.meta.url), {
         name: 'synth-worker',
+        credentials: 'same-origin',
       }),
     []
   )
@@ -176,7 +171,7 @@ export default function Synth() {
   useEffect(() => {
     if (ctx.current.state === 'running' && !isOn) {
       ctx.current.suspend()
-    } else if (ctx.current.state === 'suspended' && isOn) {
+    } else if (isReady && ctx.current.state === 'suspended' && isOn) {
       ctx.current.resume()
     }
   }, [isOn])
@@ -194,7 +189,9 @@ export default function Synth() {
 
     async function init() {
       try {
-        await ctx.current.audioWorklet.addModule(Worklet)
+        await ctx.current.audioWorklet.addModule('/worklets/audio-worklet.js', {
+          credentials: 'same-origin',
+        })
 
         const currentTime = ctx.current.currentTime
         const source = ctx.current.createMediaStreamDestination()
@@ -229,8 +226,8 @@ export default function Synth() {
           const gain = ctx.current.createGain()
           const compressor = ctx.current.createDynamicsCompressor()
 
-          node.connect(gain)
-          // compressor.connect(gain)
+          node.connect(compressor)
+          compressor.connect(gain)
           gain.connect(masterCompressor)
 
           processors.current[i] = {
@@ -268,32 +265,28 @@ export default function Synth() {
   useEffect(() => {
     if (!midiRef.current) {
       async function initMidi() {
-        try {
-          navigator.requestMIDIAccess({ sysex: true }).then(access => {
-            midiRef.current = access
-
-            midiRef.current.inputs.forEach(input => {
-              input.addEventListener('midimessage', handleMidi)
-            })
-          })
-        } catch (err) {
-          console.error('UNABLE TO INIT MIDI', err)
+        const permissions = await navigator.permissions.query({ name: 'midi' })
+        if (permissions.state === 'granted') {
+          setHasMIDIPermission(true)
         }
+
+        midiRef.current = await navigator.requestMIDIAccess({ sysex: true })
+
+        midiRef.current.inputs.forEach(input => {
+          input.addEventListener('midimessage', handleMidi)
+        })
       }
 
       initMidi()
-    } else {
-      midiRef.current.inputs.forEach(input => {
-        input.addEventListener('midimessage', handleMidi)
-      })
     }
 
     return () => {
+      if (!midiRef.current) return
       midiRef.current.inputs.forEach(input => {
         input.removeEventListener('midimessage', handleMidi as EventListener)
       })
     }
-  }, [handleMidi])
+  }, [handleMidi, hasMIDIPermission])
 
   useEffect(() => {
     if (!isReady) return
@@ -317,6 +310,13 @@ export default function Synth() {
       <div className={styles.synth}>
         <div className={styles.top}>
           <Oscillator
+            hasMIDIPermission={hasMIDIPermission}
+            setMIDIPermission={async (value: boolean) => {
+              if (isReady && isOn && ctx.current.state === 'suspended') {
+                await ctx.current.resume()
+              }
+              setHasMIDIPermission(value)
+            }}
             isOn={isOn}
             togglePower={() => setIsOn(!isOn)}
             oscillators={oscillators}

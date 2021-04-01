@@ -3,7 +3,7 @@
   grid-column: 1 / 4;
   justify-self: center;
   align-self: flex-start;
-  height: 95%;
+  height: 125px;
   width: 225px;
   background-color: gray;
   border-bottom: 8px outset var(--light-shadow);
@@ -11,6 +11,7 @@
   border-right: 8px inset var(--dark-shadow);
   border-left: 8px outset var(--dark-shadow);
   padding: 0 4px 4px 4px;
+  color: var(--black);
 
   hr {
     grid-row: 2;
@@ -22,6 +23,28 @@
     opacity: 0.5;
     border: none;
     height: 2px;
+  }
+}
+
+.permissionWrapper {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    padding: 4px;
+  }
+
+  .permissionBtns {
+    margin: 4px 0;
+    display: flex;
+    justify-content: space-evenly;
+    button {
+      background-color: rgba(9, 9, 9, 0.2);
+      border: none;
+      font-family: inherit;
+      padding: 4px;
+      width: 90px;
+    }
   }
 }
 

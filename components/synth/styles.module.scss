@@ -1,12 +1,4 @@
 .synth {
-  --dark-shadow: rgba(26, 26, 26, 1);
-  --light-shadow: rgba(26, 26, 26, 0.85);
-  --piano-color: #262626;
-  --keyboard-width: 648px;
-  --piano-primary: #f29f05;
-  --black: #2a2a2a;
-  --white: #fafafa;
-
   button {
     outline: none;
     cursor: pointer;
@@ -23,9 +15,8 @@
   border-bottom: 8px outset var(--dark-shadow);
   color: var(--piano-primary);
 
-  & * {
+  * {
     user-select: none;
-    box-sizing: border-box;
   }
 }
 

@@ -10,8 +10,10 @@ import WaveToggle from './WaveToggle'
 interface OscillatorUI {
   isOn: boolean
   oscillators: { [key: string]: OscillatorProps }
+  hasMIDIPermission: boolean
   togglePower: () => void
   handleValueChange: (id: string, values: Partial<OscillatorProps>) => void
+  setMIDIPermission: (value: boolean) => void
 }
 
 interface SliderProps
@@ -32,10 +34,12 @@ function Slider({ effectName, ...props }: SliderProps) {
 }
 
 export default function OscillatorUI({
+  hasMIDIPermission,
   isOn,
   oscillators,
   handleValueChange,
   togglePower,
+  setMIDIPermission,
 }: OscillatorUI) {
   const [osc, setOsc] = useState('0')
 
@@ -63,7 +67,7 @@ export default function OscillatorUI({
   return (
     <div className={styles.oscillator}>
       <div className={styles.title}>
-        <h1>u-Znth 3000</h1>
+        <h1>u-znth 3000</h1>
       </div>
       <div className={styles.switch}>
         <div className={[styles.light, isOn ? styles.isOn : ''].join(' ')} />
@@ -161,7 +165,13 @@ export default function OscillatorUI({
           )
         })}
       </div>
-      <Screen oscillator={oscillators[osc]} isOn={isOn} currentOsc={osc} />
+      <Screen
+        oscillator={oscillators[osc]}
+        isOn={isOn}
+        currentOsc={osc}
+        hasMIDIPermission={hasMIDIPermission}
+        setMIDIPermission={setMIDIPermission}
+      />
       <div className={styles.toggleBtns}>
         {Object.keys(oscillators).map(o => {
           const isActive = osc === o
