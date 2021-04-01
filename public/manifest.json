@@ -1,7 +1,7 @@
 {
-  "name": "u-znth",
-  "short_name": "uznth",
-  "description": "A low-latency synthesizer comprised of four oscillators, created by Ulises Himely using React, the Web Audio api, an Audio Worklet, and a Web Worker.",
+  "name": "u-znth by Ulises Himely",
+  "short_name": "u-znth",
+  "description": "u-znth is a low-latency synthesizer comprised of four oscillators, created by Ulises Himely using React, the Web Audio api, an Audio Worklet, and a Web Worker.",
   "icons": [
     {
       "src": "/images/logo/icon@48x.png",

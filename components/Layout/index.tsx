@@ -10,7 +10,7 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <>
       <Head key="meta-tags">
-        <title>u-znth.io</title>
+        <title>u-znth by Ulises Himely</title>
         <meta charSet="utf-8" />
         <meta
           name="viewport"

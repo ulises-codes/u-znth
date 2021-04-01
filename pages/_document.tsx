@@ -17,7 +17,31 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-
+          <meta
+            name="description"
+            content="u-znth is a low-latency synthesizer comprised of four oscillators, created by Ulises Himely using React, the Web Audio api, an Audio Worklet, and a Web Worker."
+          />
+          <meta property="og:title" content="u-znth by Ulises Himely" />
+          <meta
+            property="og:image"
+            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617312468/u-znth/screenshot_kqmfjz.png"
+          />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:url" content="https://uznth.live" />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@uliseshimely" />
+          <meta name="twitter:title" content="u-znth by Ulises Himely" />
+          <meta
+            name="twitter:description"
+            content="u-znth is a low-latency synthesizer comprised of four oscillators, created by Ulises Himely using React, the Web Audio api, an Audio Worklet, and a Web Worker."
+          />
+          <meta
+            name="twitter:image"
+            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617312468/u-znth/screenshot_kqmfjz.png"
+          />
+          <meta name="twitter:image:alt" content="Screenshot of u-znth.live" />
           <link
             rel="shortcut icon"
             href="/images/logo/icon@192x.png"
@@ -36,18 +60,21 @@ class MyDocument extends Document {
             name="keywords"
             content="portfolio, javascript, react, developer, typescript"
           />
-          <meta name="application-name" content="u-znth" />
+          <meta name="application-name" content="u-znth by Ulises Himely" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
           <meta
             name="apple-mobile-web-app-status-bar-style"
             content="default"
           />
-          <meta name="apple-mobile-web-app-title" content="u-znth" />
+          <meta
+            name="apple-mobile-web-app-title"
+            content="u-znth by Ulises Himely"
+          />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="msapplication-TileColor" content="#f29f05" />
           <meta name="msapplication-tap-highlight" content="no" />
-          <meta property="og:site_name" content="u-znth" />
+          <meta property="og:site_name" content="uznth.live" />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
