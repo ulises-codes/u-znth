@@ -14,10 +14,6 @@ import {
 
 import styles from './styles.module.scss'
 
-// const worker = new Worker(
-
-// const worker = new Worker('/workers/synth-worker.current.js', { type: 'module' })
-
 export default function Synth() {
   const [isReady, setIsReady] = useState(false)
   const [isOn, setIsOn] = useState(true)

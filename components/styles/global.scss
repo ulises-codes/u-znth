@@ -50,3 +50,11 @@ a {
   margin: 0 4px;
   color: gray;
 }
+
+.fallback-message--div {
+  text-align: center;
+
+  span {
+    color: var(--piano-primary);
+  }
+}
