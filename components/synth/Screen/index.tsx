@@ -5,28 +5,28 @@ type ScreenProps = {
   isOn: boolean
   oscillator: OscillatorProps
   currentOsc: string
-  hasMIDIPermission: boolean
-  setMIDIPermission: (value: boolean) => void
+  midiStatus: MIDIStatus
+  setMIDIStatus: SetMIDIStatus
 }
 
 export default function Screen({
   currentOsc,
-  hasMIDIPermission,
+  midiStatus,
   isOn,
   oscillator,
-  setMIDIPermission,
+  setMIDIStatus,
 }: ScreenProps) {
   return (
     <div className={styles.screenWrapper}>
-      {!hasMIDIPermission ? (
+      {midiStatus !== 'GRANTED' && midiStatus !== 'DENIED' ? (
         <div className={styles.permissionWrapper}>
           <span>
             Please grant this application access to your MIDI controller. Or,
             you may use your mouse to play the keys.
           </span>
           <div className={styles.permissionBtns}>
-            <button onClick={() => setMIDIPermission(true)}>Allow</button>
-            <button onClick={() => setMIDIPermission(false)}>Deny</button>
+            <button onClick={() => setMIDIStatus('GRANTED')}>Allow</button>
+            <button onClick={() => setMIDIStatus('DENIED')}>Deny</button>
           </div>
         </div>
       ) : (

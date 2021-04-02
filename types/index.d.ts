@@ -20,3 +20,7 @@ declare interface ProcessorProps {
   compressor?: DynamicsCompressorNode
   gain?: GainNode
 }
+
+declare type MIDIStatus = 'INIT' | 'DENIED' | 'GRANTED' | 'PENDING_PERMISSION'
+
+declare type SetMIDIStatus = (status: MIDIStatus) => void

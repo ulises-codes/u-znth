@@ -10,10 +10,10 @@ import WaveToggle from './WaveToggle'
 interface OscillatorUI {
   isOn: boolean
   oscillators: { [key: string]: OscillatorProps }
-  hasMIDIPermission: boolean
   togglePower: () => void
   handleValueChange: (id: string, values: Partial<OscillatorProps>) => void
-  setMIDIPermission: (value: boolean) => void
+  setMIDIStatus: SetMIDIStatus
+  midiStatus: MIDIStatus
 }
 
 interface SliderProps
@@ -34,12 +34,12 @@ function Slider({ effectName, ...props }: SliderProps) {
 }
 
 export default function OscillatorUI({
-  hasMIDIPermission,
   isOn,
   oscillators,
+  midiStatus,
   handleValueChange,
   togglePower,
-  setMIDIPermission,
+  setMIDIStatus,
 }: OscillatorUI) {
   const [osc, setOsc] = useState('0')
 
@@ -170,8 +170,8 @@ export default function OscillatorUI({
         oscillator={oscillators[osc]}
         isOn={isOn}
         currentOsc={osc}
-        hasMIDIPermission={hasMIDIPermission}
-        setMIDIPermission={setMIDIPermission}
+        midiStatus={midiStatus}
+        setMIDIStatus={setMIDIStatus}
       />
       <div className={styles.toggleBtns}>
         {Object.keys(oscillators).map(o => {

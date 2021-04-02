@@ -16,13 +16,13 @@ import styles from './styles.module.scss'
 
 // const worker = new Worker(
 
-// const worker = new Worker('/workers/synth-worker.js', { type: 'module' })
+// const worker = new Worker('/workers/synth-worker.current.js', { type: 'module' })
 
 export default function Synth() {
   const [isReady, setIsReady] = useState(false)
   const [isOn, setIsOn] = useState(true)
   const [isSustaining, setIsSustaining] = useState(false)
-  const [hasMIDIPermission, setHasMIDIPermission] = useState(false)
+  const [midiStatus, setMIDIStatus] = useState<MIDIStatus>('INIT')
 
   const [oscillators, setOscillators] = useState<{
     [key: string]: OscillatorProps
@@ -46,15 +46,7 @@ export default function Synth() {
     return obj
   })
 
-  const worker = useMemo(
-    () =>
-      new Worker(new URL('./synth-worker', import.meta.url), {
-        name: 'synth-worker',
-        // credentials: 'same-origin',
-        type: 'module',
-      }),
-    []
-  )
+  const worker = useRef() as MutableRefObject<Worker>
 
   const audioRef = useRef() as MutableRefObject<HTMLAudioElement>
 
@@ -75,12 +67,12 @@ export default function Synth() {
 
   const globalParamsStartIndex = PARAMS_LIST.length * OSC_QTY
 
-  const ctx = useRef(new AudioContext())
+  const ctx = useRef() as MutableRefObject<AudioContext>
 
-  const master = useRef({
-    compressor: ctx.current.createDynamicsCompressor(),
-    gain: ctx.current.createGain(),
-  })
+  const master = useRef() as MutableRefObject<{
+    compressor: DynamicsCompressorNode
+    gain: GainNode
+  }>
 
   const processors = useRef<{ [key: string]: ProcessorProps }>({})
 
@@ -104,6 +96,10 @@ export default function Synth() {
   }, [oscillators])
 
   const addNote = (note: number) => {
+    if (isOn && isReady && ctx.current.state === 'suspended') {
+      ctx.current.resume()
+    }
+
     const existingIndex = notesView.current.indexOf(note)
     if (existingIndex >= 0) {
       notesView.current[existingIndex + 2] = ctx.current.currentTime
@@ -167,23 +163,35 @@ export default function Synth() {
   )
 
   useEffect(() => {
-    if (ctx.current.state === 'running' && !isOn) {
+    if (ctx.current && ctx.current.state === 'running' && !isOn) {
       ctx.current.suspend()
     } else if (isReady && ctx.current.state === 'suspended' && isOn) {
       ctx.current.resume()
     }
-  }, [isOn])
+  }, [isOn, isReady])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    worker.postMessage({
+    worker.current = new Worker(new URL('./synth-worker', import.meta.url), {
+      name: 'synth-worker',
+      // credentials: 'same-origin',
+      type: 'module',
+    })
+
+    worker.current.postMessage({
       action: 'init',
       notesSAB: notesSAB.current,
       commSAB: commSAB.current,
       paramsLength: PARAMS_LIST.length,
       notePropsLength: NOTE_PROPS.length,
     })
+
+    ctx.current = new AudioContext()
+    master.current = {
+      compressor: ctx.current.createDynamicsCompressor(),
+      gain: ctx.current.createGain(),
+    }
 
     async function init() {
       try {
@@ -256,27 +264,34 @@ export default function Synth() {
       }
 
       ctx.current.close()
-      worker.terminate()
+      worker.current.terminate()
     }
   }, [])
 
   useEffect(() => {
-    if (!midiRef.current) {
-      async function initMidi() {
-        const permissions = await navigator.permissions.query({ name: 'midi' })
-        if (permissions.state === 'granted') {
-          setHasMIDIPermission(true)
+    async function initMidi() {
+      if (midiStatus !== 'DENIED') {
+        try {
+          if (!midiRef.current || !midiRef.current.inputs) {
+            const access = await navigator.requestMIDIAccess({
+              sysex: true,
+            })
+
+            midiRef.current = access
+          }
+
+          midiRef.current.inputs.forEach(input => {
+            input.addEventListener('midimessage', handleMidi)
+          })
+
+          setMIDIStatus('GRANTED')
+        } catch (error) {
+          setMIDIStatus('PENDING_PERMISSION')
         }
-
-        midiRef.current = await navigator.requestMIDIAccess({ sysex: true })
-
-        midiRef.current.inputs.forEach(input => {
-          input.addEventListener('midimessage', handleMidi)
-        })
       }
-
-      initMidi()
     }
+
+    initMidi()
 
     return () => {
       if (!midiRef.current) return
@@ -284,7 +299,7 @@ export default function Synth() {
         input.removeEventListener('midimessage', handleMidi as EventListener)
       })
     }
-  }, [handleMidi, hasMIDIPermission])
+  }, [handleMidi, midiStatus])
 
   useEffect(() => {
     if (!isReady) return
@@ -295,10 +310,6 @@ export default function Synth() {
     } else if (paramsView.current[globalParamsStartIndex] > 0) {
       paramsView.current[globalParamsStartIndex] = 0
       paramsView.current[globalParamsStartIndex + 1] = ctx.current.currentTime
-
-      // commView.current[0] = 300
-
-      // Atomics.notify(commView.current, 0)
     }
   }, [isSustaining, isReady])
 
@@ -308,12 +319,12 @@ export default function Synth() {
       <div className={styles.synth}>
         <div className={styles.top}>
           <Oscillator
-            hasMIDIPermission={hasMIDIPermission}
-            setMIDIPermission={async (value: boolean) => {
+            midiStatus={midiStatus}
+            setMIDIStatus={async value => {
               if (isReady && isOn && ctx.current.state === 'suspended') {
                 await ctx.current.resume()
               }
-              setHasMIDIPermission(value)
+              setMIDIStatus(value)
             }}
             isOn={isOn}
             togglePower={() => setIsOn(!isOn)}
