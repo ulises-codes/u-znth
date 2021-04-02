@@ -1,4 +1,4 @@
-import midiToFreq from './helper/midiToFreq'
+import midiToFreq from 'helper/midiToFreq'
 
 type DataProps = {
   notesSAB: SharedArrayBuffer

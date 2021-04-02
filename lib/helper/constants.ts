@@ -1,4 +1,4 @@
-/// <reference path="../types.d.ts" />
+/// <reference path="../../types/index.d.ts" />
 
 export const paramValueList = [
   { name: 'volume', min: 0, max: 0.8, step: 0.008, unit: '%' },

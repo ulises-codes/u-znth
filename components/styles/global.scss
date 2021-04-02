@@ -26,6 +26,7 @@ body {
 }
 
 footer {
+  font-size: small;
   div {
     padding: 16px;
     display: flex;
@@ -43,4 +44,9 @@ a {
   height: 100vh;
   grid-template-rows: 1fr 150px;
   align-items: center;
+}
+
+.footer-pipe {
+  margin: 0 4px;
+  color: gray;
 }

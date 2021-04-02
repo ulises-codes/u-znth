@@ -1,4 +1,4 @@
-/// <reference path="./types.d.ts" />
+/// <reference path="../../types/index.d.ts" />
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { MutableRefObject } from 'react'
@@ -10,16 +10,13 @@ import {
   NOTE_PROPS,
   PARAMS_LIST,
   GLOBAL_PARAMS,
-} from './helper/constants'
-
-// import worklet from '/worklets/audio-worklet'
-
-const Worklet = new URL(
-  '../../public/worklets/audio-worklet.js',
-  import.meta.url
-)
+} from 'helper/constants'
 
 import styles from './styles.module.scss'
+
+// const worker = new Worker(
+
+// const worker = new Worker('/workers/synth-worker.js', { type: 'module' })
 
 export default function Synth() {
   const [isReady, setIsReady] = useState(false)
@@ -49,18 +46,19 @@ export default function Synth() {
     return obj
   })
 
-  const audioRef = useRef() as MutableRefObject<HTMLAudioElement>
-
-  const midiRef = useRef() as MutableRefObject<WebMidi.MIDIAccess>
-
   const worker = useMemo(
     () =>
-      new Worker(new URL('./synth-worker.ts', import.meta.url), {
+      new Worker(new URL('./synth-worker', import.meta.url), {
         name: 'synth-worker',
-        credentials: 'same-origin',
+        // credentials: 'same-origin',
+        type: 'module',
       }),
     []
   )
+
+  const audioRef = useRef() as MutableRefObject<HTMLAudioElement>
+
+  const midiRef = useRef() as MutableRefObject<WebMidi.MIDIAccess>
 
   const commSAB = useRef(new SharedArrayBuffer(12))
   const commView = useRef(new Int32Array(commSAB.current))
@@ -189,7 +187,7 @@ export default function Synth() {
 
     async function init() {
       try {
-        await ctx.current.audioWorklet.addModule('/worklets/audio-worklet.js', {
+        await ctx.current.audioWorklet.addModule('/workers/audio-worklet.js', {
           credentials: 'same-origin',
         })
 

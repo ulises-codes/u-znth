@@ -3,7 +3,7 @@ export default function Footer() {
     <footer>
       <div>
         <span>
-          ©{new Date().getFullYear()} |{' '}
+          ©{new Date().getFullYear()} <span className="footer-pipe">|</span>{' '}
           <a
             href="https://ulises.codes"
             target="_blank"

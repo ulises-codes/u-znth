@@ -1,9 +1,9 @@
-/// <reference path="../types.d.ts" />
+/// <reference path="../../../types/index.d.ts" />
 
 import { HTMLAttributes, useState } from 'react'
 
 import Screen from '../Screen'
-import { paramValueList } from '../helper/constants'
+import { paramValueList } from 'helper/constants'
 import styles from './styles.module.scss'
 import WaveToggle from './WaveToggle'
 
@@ -68,6 +68,7 @@ export default function OscillatorUI({
     <div className={styles.oscillator}>
       <div className={styles.title}>
         <h1>u-znth 3000</h1>
+        <div>U</div>
       </div>
       <div className={styles.switch}>
         <div className={[styles.light, isOn ? styles.isOn : ''].join(' ')} />

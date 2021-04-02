@@ -59,13 +59,28 @@ $active: var(--piano-primary);
   grid-row: 1;
   grid-column: 3;
   justify-self: end;
-  height: 32px;
+  display: flex;
+  align-items: center;
+  color: var(--white);
 
   h1 {
     color: inherit;
     font-size: 1.75rem;
     font-family: VT323;
-    margin: 0;
+    margin-right: 8px;
+  }
+
+  div {
+    -webkit-text-stroke: 1px var(--piano-primary);
+    font-family: 'Gill Sans';
+    font-weight: normal;
+    background-color: var(--piano-color);
+    border: 2px outset var(--piano-primary);
+    color: transparent;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    font-size: 1.5em;
   }
 }
 
@@ -249,10 +264,11 @@ $active: var(--piano-primary);
   align-self: center;
   display: flex;
   justify-content: center;
+  margin: 8px 0;
 }
 
 .oscToggleBtn {
-  transition: opacity 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
   border: 2px solid $active;
   opacity: 0.1;
   color: var(--piano-color);
@@ -270,6 +286,7 @@ $active: var(--piano-primary);
   }
 
   &.on.active {
+    box-shadow: 0 0 6px var(--piano-primary);
     opacity: 0.95;
     background-color: $active;
   }

@@ -1,4 +1,4 @@
-/// <reference path="../types.d.ts" />
+/// <reference path="../../../types/index.d.ts" />
 
 import styles from './styles.module.scss'
 import type { ReactNode } from 'react'

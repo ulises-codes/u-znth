@@ -5,11 +5,12 @@ module.exports = withPWA({
   future: {
     webpack5: true,
   },
-  webpack(config, { buildId, dev, isServer, defaultLoaders, webpack }) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    })
+  webpack: (config, { isServer, dev }) => {
+    //* Workaround for undefined Worker chunk error
+    //* https://github.com/vercel/next.js/issues/22813
+    config.output.chunkFilename = isServer
+      ? `${dev ? '[name]' : '[name].[fullhash]'}.js`
+      : `static/chunks/${dev ? '[name]' : '[name].[fullhash]'}.js`
 
     return config
   },

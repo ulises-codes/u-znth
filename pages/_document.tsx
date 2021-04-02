@@ -24,7 +24,7 @@ class MyDocument extends Document {
           <meta property="og:title" content="u-znth by Ulises Himely" />
           <meta
             property="og:image"
-            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617312468/u-znth/screenshot_kqmfjz.png"
+            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617327422/u-znth/screenshot.png"
           />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
@@ -39,7 +39,7 @@ class MyDocument extends Document {
           />
           <meta
             name="twitter:image"
-            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617312468/u-znth/screenshot_kqmfjz.png"
+            content="https://res.cloudinary.com/da3fgujdy/image/upload/c_fill,g_north_west,h_630,q_100,w_1200/v1617327422/u-znth/screenshot.png"
           />
           <meta name="twitter:image:alt" content="Screenshot of u-znth.live" />
           <link
@@ -80,9 +80,18 @@ class MyDocument extends Document {
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
                 '@context': 'https://schema.org',
-                '@type': 'Person',
+                '@type': 'CreativeWork',
                 url: 'https://www.uznth.live',
                 image: 'https://www.uznth.live/images/logo/icon@192x.png',
+                abstract:
+                  'u-znth is a low-latency synthesizer comprised of four oscillators, created by Ulises Himely using React, the Web Audio api, an Audio Worklet, and a Web Worker.',
+                author: {
+                  '@type': 'Person',
+                  url: 'https://www.ulises.codes',
+                  image: 'https://www.ulises.codes/images/logo/icon@192x.png',
+                  email: 'hi@ulises.codes',
+                },
+                isAccessibleForFree: true,
               }),
             }}
           />

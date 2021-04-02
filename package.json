@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
-    "tsc:worklet": "tsc --project ./worklets/tsconfig.worklet.json",
+    "tsc:workers": "tsc --project ./workers/tsconfig.worklet.json",
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run tsc:workers && next build",
     "start": "next start"
   },
   "author": "Ulises Himely",

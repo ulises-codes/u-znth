@@ -1,4 +1,4 @@
-import { paramValueList } from '../helper/constants'
+import { paramValueList } from 'helper/constants'
 import styles from './styles.module.scss'
 
 type ScreenProps = {

@@ -2,31 +2,29 @@
   "compilerOptions": {
     "allowJs": true,
     "alwaysStrict": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "esnext", "Dom.Iterable", "WebWorker"],
+    "lib": ["dom", "es2017", "DOM.Iterable", "WebWorker"],
     "module": "esnext",
     "moduleResolution": "node",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2020",
-    "noEmit": false,
-    "declaration": true,
-    "emitDeclarationOnly": false,
-    "sourceMap": true,
-    "isolatedModules": true,
-    "listEmittedFiles": true,
+    "target": "esnext",
+    "baseUrl": ".",
     "paths": {
       "components/*": ["./components/*"],
-      "styles/*": ["./components/styles/*"]
-    },
-    "resolveJsonModule": true
+      "styles/*": ["./components/styles/*"],
+      "helper/*": ["lib/helper/*"],
+      "types/*": ["types/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", "worklets"]
+  "exclude": ["node_modules", "dist", "workers", "public"]
 }
