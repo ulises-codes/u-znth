@@ -7,7 +7,7 @@ export default function Footer() {
           <a
             href="https://ulises.codes"
             target="_blank"
-            rel="author noref noopener"
+            rel="author noreferrer noopener"
           >
             Ulises Himely
           </a>
